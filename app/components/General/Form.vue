@@ -1,13 +1,14 @@
 <script setup lang="ts">
 const props = defineProps({
-  value: Object
+  value: Object,
+  schema: Object,
 })
 
 const emits = defineEmits(['on-submit'])
 </script>
 
 <template>
-    <form @submit.prevent="emits('on-submit')">
-      <slot name="default" />
-    </form>
+  <form @submit.prevent="emits('on-submit')">
+    <slot name="default" />
+  </form>
 </template>

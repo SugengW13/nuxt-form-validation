@@ -1,28 +1,20 @@
 {
-  // Eslint
-  "eslint.validate": [
-    "javascript",
-    "typescript",
-    "vue",
-    "json",
-    "jsonc"
-  ],
-  "eslint.format.enable": true,
-  "eslint.useFlatConfig": true,
+  // Indent
+  "editor.indentSize": "tabSize",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
   // Formatter
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit",
-    "source.fixAll": "explicit",
+    "source.fixAll.prettier": "explicit"
   },
-  "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  "[vue]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
+
+  // Prettier
+  "prettier.semi": false,
+  "prettier.singleQuote": true
 }
