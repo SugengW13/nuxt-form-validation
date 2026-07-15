@@ -3,7 +3,7 @@ export interface FormError {
   message?: string
 }
 
-export interface SchemaValidationResult<T> {
-  result?: T
+export interface FormSubmitEvent<T> {
+  data?: T
   errors?: FormError[]
 }

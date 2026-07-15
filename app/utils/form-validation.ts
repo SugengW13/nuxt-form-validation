@@ -1,15 +1,15 @@
 import type { StandardSchemaV1 } from '@standard-schema/spec'
-import type { SchemaValidationResult } from '~/types/form'
+import type { FormSubmitEvent } from '~/types/form'
 
 export async function validateSchema(
-  values: any,
+  values: unknown,
   schema?: StandardSchemaV1,
-): Promise<SchemaValidationResult<typeof values>> {
+): Promise<FormSubmitEvent<typeof values>> {
   if (!schema) throw new Error('Invalid schema')
 
   const result = await schema['~standard'].validate(values)
 
-  if (!result.issues) return { result: result.value }
+  if (!result.issues) return { data: result.value }
 
   const errors = result.issues.map((issue) => ({
     name:

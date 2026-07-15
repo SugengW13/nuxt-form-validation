@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { StandardSchemaV1 } from '@standard-schema/spec'
 import { reactive } from 'vue'
-import type { SchemaValidationResult } from '~/types/form'
+import type { FormSubmitEvent } from '~/types/form'
 
 const props = defineProps({
   schema: Object as PropType<StandardSchemaV1>,
@@ -12,8 +12,10 @@ const form = reactive({
   password: undefined,
 })
 
-function onSubmit(result: SchemaValidationResult<typeof form>) {
-  console.log(result)
+const result = ref()
+
+function onSubmit(event: FormSubmitEvent<typeof form>) {
+  console.log(event)
 }
 </script>
 
@@ -41,5 +43,9 @@ function onSubmit(result: SchemaValidationResult<typeof form>) {
     />
 
     <general-button type="submit"> Login </general-button>
+
+    <p v-if="result">
+      {{ result }}
+    </p>
   </general-form>
 </template>
