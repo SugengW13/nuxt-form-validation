@@ -5,7 +5,15 @@
 
       <hr />
 
-      <form-login />
+      <div class="space-y-2">
+        <p class="text-lg font-semibold">Zod Validation</p>
+        <form-login :schema="zodLoginSchema" class="max-w-[320px]" />
+      </div>
+
+      <div class="space-y-2">
+        <p class="text-lg font-semibold">Yup Validation</p>
+        <form-login :schema="yupLoginSchema" class="max-w-[320px]" />
+      </div>
     </div>
   </div>
 </template>

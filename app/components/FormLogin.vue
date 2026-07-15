@@ -1,33 +1,44 @@
 <script setup lang="ts">
+import type { StandardSchemaV1 } from '@standard-schema/spec'
+import { reactive } from 'vue'
+import type { SchemaValidationResult } from '~/types/form'
+
+const props = defineProps({
+  schema: Object as PropType<StandardSchemaV1>,
+})
+
 const form = reactive({
   email: undefined,
   password: undefined,
 })
 
-function onSubmit() {
-  console.log(form)
+function onSubmit(result: SchemaValidationResult<typeof form>) {
+  console.log(result)
 }
 </script>
 
 <template>
-  <general-form @on-submit="onSubmit" class="w-[320px] space-y-2">
-    <general-form-field>
-      <general-input
-        v-model="form.email"
-        id="inputEmail"
-        label="Email"
-        type="email"
-      />
-    </general-form-field>
+  <general-form
+    :values="form"
+    :schema="props.schema"
+    @on-submit="onSubmit"
+    class="space-y-2"
+  >
+    <general-input
+      v-model="form.email"
+      id="inputEmail"
+      name="email"
+      label="Email"
+      type="email"
+    />
 
-    <general-form-field>
-      <general-input
-        v-model="form.password"
-        id="inputPassword"
-        label="Password"
-        type="password"
-      />
-    </general-form-field>
+    <general-input
+      v-model="form.password"
+      id="inputPassword"
+      name="password"
+      label="Password"
+      type="password"
+    />
 
     <general-button type="submit"> Login </general-button>
   </general-form>
