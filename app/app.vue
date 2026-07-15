@@ -5,14 +5,26 @@
 
       <hr />
 
-      <div class="space-y-2">
+      <div class="space-y-4">
         <p class="text-lg font-semibold">Zod Validation</p>
+
         <form-login :schema="zodLoginSchema" class="max-w-[320px]" />
+
+        <hr />
+
+        <form-product :schema="zodProductSchema" class="max-w-[320px]" />
       </div>
 
-      <div class="space-y-2">
+      <hr />
+
+      <div class="space-y-4">
         <p class="text-lg font-semibold">Yup Validation</p>
+
         <form-login :schema="yupLoginSchema" class="max-w-[320px]" />
+
+        <hr />
+
+        <form-product :schema="yupProductSchema" class="max-w-[320px]" />
       </div>
     </div>
   </div>

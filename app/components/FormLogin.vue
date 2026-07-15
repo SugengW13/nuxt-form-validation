@@ -15,7 +15,7 @@ const form = reactive({
 const result = ref()
 
 function onSubmit(event: FormSubmitEvent<typeof form>) {
-  console.log(event)
+  result.value = event
 }
 </script>
 
@@ -44,8 +44,11 @@ function onSubmit(event: FormSubmitEvent<typeof form>) {
 
     <general-button type="submit"> Login </general-button>
 
-    <p v-if="result">
-      {{ result }}
+    <p v-if="result" class="text-sm">
+      Submit Result: <br />
+      <span class="font-medium">
+        {{ result }}
+      </span>
     </p>
   </general-form>
 </template>
