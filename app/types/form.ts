@@ -1,9 +1,6 @@
-export interface FormError {
-  name?: string
-  message?: string
-}
+export type FormError = Map<string, string>
 
 export interface FormSubmitEvent<T> {
   data?: T
-  errors?: FormError[]
+  errors?: FormError
 }

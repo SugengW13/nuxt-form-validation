@@ -8,7 +8,7 @@
       <div class="space-y-4">
         <p class="text-lg font-semibold">Zod Validation</p>
 
-        <form-login :schema="zodLoginSchema" class="max-w-[320px]" />
+        <form-login schema-type="zod" class="max-w-[320px]" />
 
         <hr />
 
@@ -20,7 +20,7 @@
       <div class="space-y-4">
         <p class="text-lg font-semibold">Yup Validation</p>
 
-        <form-login :schema="yupLoginSchema" class="max-w-[320px]" />
+        <form-login schema-type="yup" class="max-w-[320px]" />
 
         <hr />
 

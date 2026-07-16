@@ -11,13 +11,14 @@ export async function validateSchema(
 
   if (!result.issues) return { data: result.value }
 
-  const errors = result.issues.map((issue) => ({
-    name:
+  const errors = new Map(
+    result.issues.map((issue) => [
       issue.path
         ?.map((item) => (typeof item === 'object' ? item.key : item))
         .join('.') || '',
-    message: issue.message,
-  }))
+      issue.message,
+    ]),
+  )
 
   return { errors }
 }

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { StandardSchemaV1 } from '@standard-schema/spec'
-import { reactive } from 'vue'
+import { reactive, type PropType } from 'vue'
 import type { FormSubmitEvent } from '~/types/form'
 
 const props = defineProps({
-  schema: Object as PropType<StandardSchemaV1>,
+  schemaType: String as PropType<'zod' | 'yup'>,
 })
 
 const form = reactive({
@@ -12,7 +11,18 @@ const form = reactive({
   password: undefined,
 })
 
-const result = ref()
+const result = ref<FormSubmitEvent<typeof form>>()
+
+const schema = computed(() => {
+  switch (props.schemaType) {
+    case 'zod':
+      return zodLoginSchema
+    case 'yup':
+      return yupLoginSchema
+    default:
+      return undefined
+  }
+})
 
 function onSubmit(event: FormSubmitEvent<typeof form>) {
   result.value = event
@@ -22,13 +32,13 @@ function onSubmit(event: FormSubmitEvent<typeof form>) {
 <template>
   <general-form
     :values="form"
-    :schema="props.schema"
+    :schema="schema"
     @on-submit="onSubmit"
     class="space-y-2"
   >
     <general-input
       v-model="form.email"
-      id="inputEmail"
+      :id="`inputEmail${props.schemaType}`"
       name="email"
       label="Email"
       type="email"
@@ -36,7 +46,7 @@ function onSubmit(event: FormSubmitEvent<typeof form>) {
 
     <general-input
       v-model="form.password"
-      id="inputPassword"
+      :id="`inputPassword${props.schemaType}`"
       name="password"
       label="Password"
       type="password"
@@ -46,7 +56,10 @@ function onSubmit(event: FormSubmitEvent<typeof form>) {
 
     <p v-if="result" class="text-sm">
       Submit Result: <br />
-      <span class="font-medium">
+      <span
+        class="font-medium"
+        :class="result.errors ? 'text-red-600' : 'text-green-600'"
+      >
         {{ result }}
       </span>
     </p>

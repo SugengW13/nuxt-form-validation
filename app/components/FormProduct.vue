@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { StandardSchemaV1 } from '@standard-schema/spec'
 import { reactive } from 'vue'
 import type { FormSubmitEvent } from '~/types/form'
 
 const props = defineProps({
-  schema: Object as PropType<StandardSchemaV1>,
+  schemaType: String as PropType<'zod' | 'yup'>,
 })
 
 const form = reactive({
@@ -13,10 +12,22 @@ const form = reactive({
   units: [
     { name: undefined, price: undefined },
     { name: undefined, price: undefined },
+    { name: undefined, price: undefined },
   ],
 })
 
 const result = ref()
+
+const schema = computed(() => {
+  switch (props.schemaType) {
+    case 'zod':
+      return zodProductSchema
+    case 'yup':
+      return yupProductSchema
+    default:
+      return undefined
+  }
+})
 
 function onSubmit(event: FormSubmitEvent<typeof form>) {
   result.value = event
@@ -26,20 +37,20 @@ function onSubmit(event: FormSubmitEvent<typeof form>) {
 <template>
   <general-form
     :values="form"
-    :schema="props.schema"
+    :schema="schema"
     @on-submit="onSubmit"
     class="space-y-2"
   >
     <general-input
       v-model="form.name"
-      id="inputName"
+      :id="`inputName${props.schemaType}`"
       name="name"
       label="Name"
     />
 
     <general-input
       v-model="form.code"
-      id="inputCode"
+      :id="`inputCode${props.schemaType}`"
       name="code"
       label="Code"
     />
@@ -47,14 +58,14 @@ function onSubmit(event: FormSubmitEvent<typeof form>) {
     <div v-for="(unit, i) in form.units" class="flex space-x-2">
       <general-input
         v-model="unit.name"
-        :id="`inputUnitName${i}`"
+        :id="`inputUnitName${props.schemaType}${i}`"
         :name="`units.${i}.name`"
         label="Name"
       />
 
       <general-input
         v-model="unit.price"
-        :id="`inputUnitPrice${i}`"
+        :id="`inputUnitPrice${props.schemaType}${i}`"
         :name="`units.${i}.price`"
         label="Price"
         type="number"
@@ -65,7 +76,10 @@ function onSubmit(event: FormSubmitEvent<typeof form>) {
 
     <p v-if="result" class="text-sm">
       Submit Result: <br />
-      <span class="font-medium">
+      <span
+        class="font-medium"
+        :class="result.errors ? 'text-red-600' : 'text-green-600'"
+      >
         {{ result }}
       </span>
     </p>

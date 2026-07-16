@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 import type { InputTypeHTMLAttribute, PropType } from 'vue'
+import { formBusInjectionKey } from '~/composables/useForm'
 import type { FormError } from '~/types/form'
 
 const model = defineModel({
@@ -15,13 +16,17 @@ const props = defineProps({
   errorMessage: String,
 })
 
-const formErrors = inject<Ref<undefined | FormError[]>>(formErrorsInjectionKey)
+const formBus = inject(formBusInjectionKey, undefined)
+const formErrors = inject<Ref<undefined | FormError>>(formErrorsInjectionKey)
 
 const currentError = computed(
-  () =>
-    props.errorMessage ||
-    formErrors?.value?.find((error) => error.name === props.name)?.message,
+  () => props.errorMessage || formErrors?.value?.get(props.name ?? ''),
 )
+
+function onBlur() {
+  if (!formBus) return
+  formBus.emit({ type: 'blur', name: props.name })
+}
 </script>
 
 <template>
@@ -34,6 +39,7 @@ const currentError = computed(
       :name="props.name"
       :type="props.type ?? 'text'"
       class="border rounded-sm px-2.5 py-1.5 text-sm"
+      @blur="onBlur"
     />
 
     <span v-if="currentError?.length" class="text-red-600 font-medium text-sm">
